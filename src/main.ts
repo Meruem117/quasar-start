@@ -4,6 +4,7 @@ import { Quasar } from 'quasar'
 import '@quasar/extras/material-icons/material-icons.css'
 // Import Quasar css
 import 'quasar/src/css/index.sass'
+// Import Quasar lang
 import quasarLang from 'quasar/lang/zh-CN'
 
 import './style.css'
