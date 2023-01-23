@@ -1,23 +1,16 @@
 <template>
-
+  <q-btn-group rounded>
+    <q-btn color="yellow" glossy text-color="black" push label="Record" icon="fiber_manual_record" />
+    <q-btn color="amber" glossy text-color="black" push label="Pause" icon="pause" />
+    <q-btn color="orange" glossy text-color="black" push label="Stop" icon="stop" />
+    <q-btn color="deep-orange" glossy text-color="black" push label="Play" icon-right="play_arrow" />
+  </q-btn-group>
 </template>
 
 <script setup lang="ts">
 
 </script>
 
-<style lang="scss" scoped>
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
+<style lang="sass" scoped>
 
-  &:hover {
-    filter: drop-shadow(0 0 2em #646cffaa);
-  }
-
-  &.vue:hover {
-    filter: drop-shadow(0 0 2em #42b883aa);
-  }
-}
 </style>
