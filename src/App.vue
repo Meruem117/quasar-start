@@ -1,6 +1,5 @@
 <template>
   <h4>Record</h4>
-  <!-- <h5>{{ '00 : ' + formatNum(time) }}</h5> -->
   <div class="row justify-center q-mb-xl">
     <div class="col">
       <h5>{{ state.recorder?.duration || 0 }}</h5>录制时长(秒)
@@ -15,8 +14,13 @@
     <q-btn color="amber" glossy text-color="black" push label="Pause" icon="pause" @click="pauseRecorder" />
     <q-btn color="amber" glossy text-color="black" push label="Resume" icon="play_arrow" @click="resumeRecorder" />
     <q-btn color="orange" glossy text-color="black" push label="Stop" icon="stop" @click="stopRecorder" />
+    <q-btn color="orange" glossy text-color="black" push label="Reset" icon-right="replay" @click="resetRecorder" />
+  </q-btn-group>
+  <h4>Play</h4>
+  <h5>{{ '00 : ' + formatNum(time) }}</h5>
+  <q-btn-group rounded>
     <q-btn color="deep-orange" glossy text-color="black" push label="Play" icon-right="play_circle"
-      @click="playRecorder" />
+      @click="startPlayer" />
   </q-btn-group>
   <h4>Download</h4>
   <q-btn-group push>
@@ -43,7 +47,6 @@ const state: State = reactive({
 onMounted(() => {
   state.timer = null
   state.recorder = null
-  initRecorder()
 })
 
 // https://recorder-api.zhuyuntao.cn/
@@ -56,33 +59,55 @@ function initRecorder(): void {
 }
 
 function startRecorder(): void {
+  if (state.recorder == null) {
+    initRecorder()
+  }
   state.recorder?.start()
-  state.timer = setInterval(() => {
-    time.value++
-  }, 1000)
 }
 
 function pauseRecorder(): void {
   state.recorder?.pause()
-  clearInterval(state.timer!)
-  state.timer = null
 }
 
 function resumeRecorder(): void {
   state.recorder?.resume()
+}
+
+function stopRecorder(): void {
+  state.recorder?.stop()
+}
+
+function resetRecorder(): void {
+  state.recorder?.destroy().then(() => {
+    state.recorder = null
+  })
+}
+
+function startPlayer(): void {
+  state.recorder?.play()
   state.timer = setInterval(() => {
     time.value++
   }, 1000)
 }
 
-function stopRecorder(): void {
-  state.recorder?.stop()
-  pauseRecorder()
-  time.value = 0
+function pausePlayer(): void {
+  state.recorder?.pausePlay()
+  clearInterval(state.timer!)
+  state.timer = null
 }
 
-function playRecorder(): void {
+function resumePlayer(): void {
+  state.recorder?.resumePlay()
+  state.timer = setInterval(() => {
+    time.value++
+  }, 1000)
+}
 
+function stopPlayer(): void {
+  state.recorder?.stopPlay()
+  clearInterval(state.timer!)
+  state.timer = null
+  time.value = 0
 }
 
 function formatNum(num: number): string {
@@ -96,7 +121,5 @@ function formatNum(num: number): string {
 h4
   margin: 40px 0
 h5
-  margin: 0
-h6
-  margin: 0 0 25px
+  margin: 0 0 20px
 </style>
