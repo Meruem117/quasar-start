@@ -2,7 +2,7 @@
   <h4>Record</h4>
   <div class="row justify-center q-mb-xl">
     <div class="col">
-      <h5>{{ state.recorder?.duration || 0 }}</h5>录制时长(秒)
+      <h5>{{ formatSecond(state.recorder?.duration || 0) || 0 }}</h5>录制时长(秒)
     </div>
     <div class="col">
       <h5>{{ state.recorder?.fileSize || 0 }}</h5>录音大小(字节)
@@ -108,6 +108,19 @@ function stopPlayer(): void {
   clearInterval(state.timer!)
   state.timer = null
   time.value = 0
+}
+
+function formatSecond(time: number): string {
+  if (!time) return ''
+  let str = time.toString()
+  if (str.length < 4) {
+    for (let i = 0; i < 4 - str.length; i++) {
+      str += '0'
+    }
+    return str
+  } else {
+    return str.slice(0, 4)
+  }
 }
 
 function formatNum(num: number): string {
