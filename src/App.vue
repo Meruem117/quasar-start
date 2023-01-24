@@ -9,6 +9,7 @@
             <h5>{{ state.recorder?.fileSize || 0 }}</h5>录音大小(字节)
         </div>
     </div>
+    <!-- <div id="waveform"></div> -->
     <q-btn-group rounded>
         <q-btn color="yellow" glossy text-color="black" push label="Record" icon="fiber_manual_record"
             @click="startRecorder" />
@@ -46,18 +47,21 @@
 <script setup lang="ts">
 import { ref, reactive, onMounted } from 'vue'
 import Recorder from 'js-audio-recorder'
+import WaveSurfer from 'wavesurfer.js'
 
 interface State {
     timer: NodeJS.Timeout | null,
-    recorder: Recorder | null
+    recorder: Recorder | null,
+    wavesurfer: any
 }
 
-const MAX_TIME = 1
+const MAX_TIME = 10
 const time = ref<number>(0)
 const alert = ref<boolean>(false)
 const state: State = reactive({
     timer: null,
     recorder: null,
+    wavesurfer: null
 })
 
 onMounted(() => {
@@ -77,7 +81,17 @@ function initRecorder(): void {
             stopRecorder()
             alert.value = true
         }
+        console.log(state.recorder?.getRecordAnalyseData())
     }
+}
+
+// https://wavesurfer-js.org/
+function initWaveSurfer(): void {
+    state.wavesurfer = WaveSurfer.create({
+        container: '#waveform',
+        waveColor: 'violet',
+        progressColor: 'purple'
+    })
 }
 
 function startRecorder(): void {
