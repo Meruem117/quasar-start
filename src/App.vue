@@ -46,8 +46,8 @@
     <!-- Download -->
     <h4>Download</h4>
     <q-btn-group push>
-        <q-btn color="blue" glossy text-color="black" push label="PCM" icon="file_download" />
-        <q-btn color="blue" glossy text-color="black" push label="WAV" />
+        <q-btn color="blue" glossy text-color="black" push label="PCM" icon="file_download" @click="downloadPCM" />
+        <q-btn color="blue" glossy text-color="black" push label="WAV" @click="downloadWAV" />
     </q-btn-group>
 </template>
 
@@ -170,6 +170,14 @@ function resumePlayer(): void {
 
 function stopPlayer(): void {
     state.recorder?.stopPlay()
+}
+
+function downloadPCM(): void {
+    state.recorder?.downloadPCM('audio')
+}
+
+function downloadWAV(): void {
+    state.recorder?.downloadWAV('audio')
 }
 
 function formatSecond(time: number): string {
