@@ -45,6 +45,8 @@
     </q-btn-group>
     <!-- Download -->
     <h4>Download</h4>
+    <q-input v-model="filename" label="Filename" dense label-color="white" :input-style="{ color: '#fff' }"
+        style="max-width: 300px;margin: 20px auto;" />
     <q-btn-group push>
         <q-btn color="blue" glossy text-color="black" push label="PCM" icon="file_download" @click="downloadPCM" />
         <q-btn color="blue" glossy text-color="black" push label="WAV" @click="downloadWAV" />
@@ -65,6 +67,7 @@ interface State {
 const MAX_TIME = 10
 const time = ref<number>(0)
 const alert = ref<boolean>(false)
+const filename = ref<string>('')
 const state: State = reactive({
     timer: null,
     recorder: null,
@@ -173,11 +176,11 @@ function stopPlayer(): void {
 }
 
 function downloadPCM(): void {
-    state.recorder?.downloadPCM('audio')
+    state.recorder?.downloadPCM(filename.value || 'audio')
 }
 
 function downloadWAV(): void {
-    state.recorder?.downloadWAV('audio')
+    state.recorder?.downloadWAV(filename.value || 'audio')
 }
 
 function formatSecond(time: number): string {
@@ -250,9 +253,11 @@ function formatNum(num: number): string {
 
 <style lang="sass" scoped>
 h4
-    margin: 40px 0
+    margin: 30px 0
 h5
     margin: 0 0 20px
 .canvas
     margin: 20px 0
+::v-deep(.q-field__control:before)
+    border-bottom: 1px solid #fff
 </style>
