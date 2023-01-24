@@ -1,7 +1,7 @@
 <template>
     <!-- Record -->
     <h4>Record</h4>
-    <div class="row justify-center q-mb-xl">
+    <div class="row justify-center">
         <div class="col">
             <h5>{{ formatSecond(state.recorder?.duration || 0) || 0 }}</h5>录制时长(秒)
         </div>
@@ -9,6 +9,7 @@
             <h5>{{ state.recorder?.fileSize || 0 }}</h5>录音大小(字节)
         </div>
     </div>
+    <canvas id="wave" width="800" height="200" class="canvas">您的浏览器不支持 HTML5 canvas 标签。</canvas>
     <!-- <div id="waveform"></div> -->
     <q-btn-group rounded>
         <q-btn color="yellow" glossy text-color="black" push label="Record" icon="fiber_manual_record"
@@ -67,6 +68,7 @@ const state: State = reactive({
 onMounted(() => {
     state.timer = null
     state.recorder = null
+    initWaveform()
 })
 
 // https://recorder-api.zhuyuntao.cn/
@@ -92,6 +94,54 @@ function initWaveSurfer(): void {
         waveColor: 'violet',
         progressColor: 'purple'
     })
+}
+
+function initWaveform(): void {
+    let element = document.getElementById('wave')
+    let ctx = (element! as any).getContext('2d')
+    let grad = ctx.createLinearGradient(-500, -150, -500, 150)
+    ctx.translate(500, 150)
+    grad.addColorStop(0, "red")
+    grad.addColorStop(0.5, "blue")
+    grad.addColorStop(1, "yellow")
+    ctx.lineWidth = 1
+
+    function init(val) {
+        ctx.clearRect(-400, -150, 800, 200)
+        ctx.beginPath()
+        let m = 10
+        let n = 3
+        let len = 100
+        let ran = 16
+        ran = Math.random() * 100
+        for (let i = len; i > 0; i--) {
+            let x = -(i * m)
+            let y1 = (ran - i / 2) * n
+            let y2 = -(ran - i / 2) * n
+
+            if (y1 < 0) y1 = 0
+            if (y2 > 0) y2 = 0
+            if (y1 > len) y1 = len
+            if (y2 < -len) y2 = -len
+
+            ctx.moveTo(x, y1);
+            ctx.lineTo(x, y2);
+        }
+        for (let i = 0; i < len; i++) {
+            let x = i * m
+            let y1 = (ran - i / 2) * n
+            let y2 = -(ran - i / 2) * n
+            if (y1 < 0) y1 = 0
+            if (y2 > 0) y2 = 0
+            if (y1 > len) y1 = len
+            if (y2 < -len) y2 = -len
+            ctx.moveTo(x, y1);
+            ctx.lineTo(x, y2);
+        }
+    }
+    init(4)
+    ctx.strokeStyle = grad
+    ctx.stroke()
 }
 
 function startRecorder(): void {
@@ -168,7 +218,9 @@ function formatNum(num: number): string {
 
 <style lang="sass" scoped>
 h4
-  margin: 40px 0
+    margin: 40px 0
 h5
-  margin: 0 0 20px
+    margin: 0 0 20px
+.canvas
+    margin: 20px 0
 </style>
