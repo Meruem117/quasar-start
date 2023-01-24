@@ -72,6 +72,12 @@ function initRecorder(): void {
         sampleRate: 16000,
         numChannels: 1,
     })
+    state.recorder.onprogress = function (params) {
+        if (params.duration > MAX_TIME) {
+            stopRecorder()
+            alert.value = true
+        }
+    }
 }
 
 function startRecorder(): void {
