@@ -11,7 +11,6 @@
             <div class="text-subtitle1 q-mb-md">录音大小(字节)</div>
         </div>
     </div>
-    <!-- <canvas id="wave" width="800" height="200" class="canvas">您的浏览器不支持 HTML5 canvas 标签。</canvas> -->
     <q-btn-group rounded>
         <q-btn color="yellow" glossy text-color="black" push label="Record" icon="fiber_manual_record"
             @click="startRecorder" />
@@ -37,11 +36,9 @@
     <div id="wavesurfer" class="q-mb-lg"></div>
     <q-btn-group rounded>
         <q-btn color="light-green" glossy text-color="black" push label="Pause" icon="pause" @click="pausePlayer" />
-        <q-btn color="light-green" glossy text-color="black" push label="Resume" icon="play_arrow"
-            @click="resumePlayer" />
+        <q-btn color="light-green" glossy text-color="black" push label="Resume" icon="play_arrow" @click="resumePlayer" />
         <q-btn color="light-green" glossy text-color="black" push label="Stop" icon="stop" @click="stopPlayer" />
-        <q-btn color="green" glossy text-color="black" push label="Play" icon-right="play_circle"
-            @click="startPlayer" />
+        <q-btn color="green" glossy text-color="black" push label="Play" icon-right="play_circle" @click="startPlayer" />
     </q-btn-group>
     <!-- Download -->
     <h4>Download</h4>
@@ -91,7 +88,6 @@ function initRecorder(): void {
             stopRecorder()
             alert.value = true
         }
-        // console.log(state.recorder?.getRecordAnalyseData())
     }
     state.recorder.onplay = function () {
         time.value = 0
@@ -201,54 +197,6 @@ function formatNum(num: number): string {
     if (num >= 10) return num.toString()
     return '00'
 }
-
-// function initWaveform(): void {
-//     let element = document.getElementById('wave')
-//     let ctx = (element! as any).getContext('2d')
-//     let grad = ctx.createLinearGradient(-500, -150, -500, 150)
-//     ctx.translate(500, 150)
-//     grad.addColorStop(0, "red")
-//     grad.addColorStop(0.5, "blue")
-//     grad.addColorStop(1, "yellow")
-//     ctx.lineWidth = 1
-
-//     function init(val) {
-//         ctx.clearRect(-400, -150, 800, 200)
-//         ctx.beginPath()
-//         let m = 10
-//         let n = 3
-//         let len = 100
-//         let ran = 16
-//         ran = Math.random() * 100
-//         for (let i = len; i > 0; i--) {
-//             let x = -(i * m)
-//             let y1 = (ran - i / 2) * n
-//             let y2 = -(ran - i / 2) * n
-
-//             if (y1 < 0) y1 = 0
-//             if (y2 > 0) y2 = 0
-//             if (y1 > len) y1 = len
-//             if (y2 < -len) y2 = -len
-
-//             ctx.moveTo(x, y1);
-//             ctx.lineTo(x, y2);
-//         }
-//         for (let i = 0; i < len; i++) {
-//             let x = i * m
-//             let y1 = (ran - i / 2) * n
-//             let y2 = -(ran - i / 2) * n
-//             if (y1 < 0) y1 = 0
-//             if (y2 > 0) y2 = 0
-//             if (y1 > len) y1 = len
-//             if (y2 < -len) y2 = -len
-//             ctx.moveTo(x, y1);
-//             ctx.lineTo(x, y2);
-//         }
-//     }
-//     init(4)
-//     ctx.strokeStyle = grad
-//     ctx.stroke()
-// }
 </script>
 
 <style lang="sass" scoped>
